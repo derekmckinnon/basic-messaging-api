@@ -2,18 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ApiException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterPostRequest extends FormRequest
+class RegisterUserPostRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,5 +21,11 @@ class RegisterPostRequest extends FormRequest
             'first_name' => 'required|string|min:3',
             'last_name' => 'required|string|min:3',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $message = join(" ", $validator->errors()->all());
+        throw new ApiException(100, 'Registration Error', $message);
     }
 }
