@@ -2,18 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ApiException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ListAllUsersGetRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true; // In a real application, we would actually check this properly
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,5 +18,11 @@ class ListAllUsersGetRequest extends FormRequest
         return [
             'requester_user_id' => 'required|integer|exists:users,id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $message = join(" ", $validator->errors()->all());
+        throw new ApiException(102, 'List Users Error', $message);
     }
 }

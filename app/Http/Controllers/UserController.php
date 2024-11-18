@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
+use App\Http\Requests\ListAllUsersGetRequest;
 use App\Http\Requests\LoginUserPostRequest;
 use App\Http\Requests\RegisterUserPostRequest;
 use App\Models\User;
@@ -25,5 +26,12 @@ class UserController extends Controller
         }
 
         return $user;
+    }
+
+    public function index(ListAllUsersGetRequest $request): array
+    {
+        $users = User::query()->where('id', '!=', $request->validated('requester_user_id'))->get();
+
+        return ['users' => $users];
     }
 }
