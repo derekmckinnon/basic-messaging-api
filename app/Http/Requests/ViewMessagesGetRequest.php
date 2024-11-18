@@ -16,7 +16,7 @@ class ViewMessagesGetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id_a' => 'required|integer|exists:users,id',
+            'user_id_a' => 'required|integer|exists:users,id|different:user_id_b',
             'user_id_b' => 'required|integer|exists:users,id',
         ];
     }
