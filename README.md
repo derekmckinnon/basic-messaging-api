@@ -23,3 +23,7 @@ as there were quite a few changes since the last Laravel version I had to catch 
   - With proper authentication, a lot of the `sender_` or `requester_` params can be implicit
 - I would probably look deeper into ways of getting the framework to format more exceptions as JSON and have a lookup table for error codes
   - This would prevent accidental uses of the wrong codes, and centralize things a little bit more
+
+## Schema Dump:
+
+The schema can be found at: `database/schema.sql`
