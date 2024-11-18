@@ -2,18 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ApiException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ViewMessagesGetRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,5 +19,11 @@ class ViewMessagesGetRequest extends FormRequest
             'user_id_a' => 'required|integer|exists:users,id',
             'user_id_b' => 'required|integer|exists:users,id',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $message = join(" ", $validator->errors()->all());
+        throw new ApiException(103, 'View Messages Error', $message);
     }
 }
