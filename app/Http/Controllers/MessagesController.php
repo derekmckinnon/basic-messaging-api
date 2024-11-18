@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SendMessagePostRequest;
 use App\Http\Requests\ViewMessagesGetRequest;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,5 +25,16 @@ class MessagesController extends Controller
             ->get();
 
         return ['messages' => $messages];
+    }
+
+    public function send(SendMessagePostRequest $request): array
+    {
+        Message::query()->create($request->validated());
+
+        return [
+            'success_code' => '200',
+            'success_title' => 'Message Sent',
+            'success_message' => 'Message was sent successfully',
+        ];
     }
 }
